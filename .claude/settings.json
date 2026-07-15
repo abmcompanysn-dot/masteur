@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(git -C \"/c/Users/Admin/ensetp\" push origin main)",
-      "Bash(curl -s -o /dev/null -w \"index: %{http_code}\\\\n\" \"https://masteur.vercel.app/\")",
-      "Bash(curl -s -o /dev/null -w \"video: %{http_code}\\\\n\" \"https://masteur.vercel.app/assets/video/hero-intro.mp4\")"
-    ]
-  }
-}
