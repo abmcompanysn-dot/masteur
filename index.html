@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UAV Sénégal — Optimisation structurelle</title>
+<meta name="description" content="Mémoire de recherche : optimisation topologique des UAV quadrirotors moyens pour l'agriculture et la surveillance au Sénégal.">
+<meta name="color-scheme" content="dark">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<div class="rail" aria-hidden="true">
+  <div class="rail-line"></div>
+  <div class="rail-fill" id="railFill"></div>
+  <div class="rail-dots" id="railDots">
+    <div class="rail-dot" data-target="p-hero" tabindex="0" role="button" aria-label="Aller à Intro"><span class="rail-label">00 · INTRO</span></div>
+    <div class="rail-dot" data-target="p-contexte" tabindex="0" role="button" aria-label="Aller à Contexte"><span class="rail-label">01 · CONTEXTE</span></div>
+    <div class="rail-dot" data-target="p-question" tabindex="0" role="button" aria-label="Aller à Question de recherche"><span class="rail-label">02 · QUESTION</span></div>
+    <div class="rail-dot" data-target="p-objectifs" tabindex="0" role="button" aria-label="Aller à Objectifs"><span class="rail-label">03 · OBJECTIFS</span></div>
+    <div class="rail-dot" data-target="p-modelisation" tabindex="0" role="button" aria-label="Aller à Modélisation"><span class="rail-label">04 · MODÉLISATION</span></div>
+    <div class="rail-dot" data-target="p-validation1" tabindex="0" role="button" aria-label="Aller à Validation initiale"><span class="rail-label">05 · VALIDATION I</span></div>
+    <div class="rail-dot" data-target="p-topologie" tabindex="0" role="button" aria-label="Aller à Optimisation topologique"><span class="rail-label">06 · TOPOLOGIE</span></div>
+    <div class="rail-dot" data-target="p-validation2" tabindex="0" role="button" aria-label="Aller à Validation des itérations"><span class="rail-label">07 · VALIDATION II</span></div>
+    <div class="rail-dot" data-target="p-comparaison" tabindex="0" role="button" aria-label="Aller à Comparaison"><span class="rail-label">08 · COMPARAISON</span></div>
+    <div class="rail-dot" data-target="p-final" tabindex="0" role="button" aria-label="Aller à Design final"><span class="rail-label">09 · DESIGN FINAL</span></div>
+  </div>
+</div>
+
+<div class="ambient hot" id="ambientHot"></div>
+<div class="ambient cool" id="ambientCool"></div>
+
+<main>
+
+  <section class="hero" id="p-hero">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">Mémoire de recherche — Génie aéronautique</div>
+        <h1>Moins de masse.<br><span class="l2">Plus d'autonomie.</span><span class="l3">Même ciel sénégalais.</span></h1>
+        <p class="hero-lede">Une démarche d'optimisation topologique pour les UAV quadrirotors moyens (2–10&nbsp;kg), pensée pour l'agriculture et la surveillance sous le climat sénégalais.</p>
+      </div>
+      <div class="hero-stage">
+        <div class="hero-3d" id="heroStage3d">
+          <div id="viewer3d"></div>
+          <img class="fallback" src="assets/img/ref_render_gray.jpg" alt="Rendu CAO du quadrirotor optimisé">
+          <div class="hero-3d-loading" id="stlLoading">Chargement du modèle 3D…</div>
+        </div>
+        <div class="hero-3d-caption"><b>Modèle réel</b> — assemblage STL optimisé · glisser pour tourner</div>
+      </div>
+    </div>
+    <div class="scroll-cue"><span class="chev">↓</span> DÉFILER POUR SUIVRE LA DÉMARCHE</div>
+  </section>
+
+  <section class="panel phase hot" id="p-contexte">
+    <div class="eyebrow">01 — Contexte</div>
+    <div class="panel-body">
+      <div>
+        <h2>Un ciel encore inaccessible aux drones moyens</h2>
+        <p>Au Sénégal, les UAV quadrirotors moyens sont déjà utilisés pour surveiller les cultures et les frontières. Mais leur autonomie de vol reste courte et leur efficacité énergétique faible — en grande partie à cause d'une masse structurelle trop importante pour la charge qu'ils doivent porter.</p>
+        <p>Leur conception actuelle ne tient pas compte des conditions spécifiques du contexte africain, notamment les fortes chaleurs, alors que des matériaux plus adaptés existent et que des marges d'optimisation énergétique restent inexploitées. Aucune étude locale ne traite encore cette problématique sous l'angle de l'optimisation structurelle.</p>
+      </div>
+      <div class="stat">
+        <div class="num mono">0</div>
+        <div class="cap">drone moyen (2–10&nbsp;kg) sur le marché sénégalais capable de décoller avec 10&nbsp;kg de charge utile <em>et</em> de voler plus de 60 minutes.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel quote-section" id="p-question">
+    <div class="quote-inner">
+      <div class="eyebrow">02 — Question de recherche</div>
+      <blockquote>« Comment améliorer l'efficacité énergétique — l'autonomie de vol — des UAV quadrirotors moyens par l'optimisation ? »</blockquote>
+      <div class="quote-note">Objectif général — proposer une démarche d'optimisation minimisant la masse totale de l'UAV tout en maintenant ses performances aérodynamiques et structurelles.</div>
+    </div>
+  </section>
+
+  <section class="panel phase cool" id="p-objectifs">
+    <div class="eyebrow">03 — Objectifs</div>
+    <h2>Sept étapes, une trajectoire</h2>
+    <div class="obj-general">
+      <div class="tag">Objectif général</div>
+      <p>Proposer une démarche d'optimisation pour les UAV moyens à rotor, en minimisant la masse totale tout en maintenant les performances aérodynamiques et structurelles.</p>
+    </div>
+    <ol class="obj-list">
+      <li><span>Analyser les espaces de conception existants et les limites des UAV actuellement utilisés au Sénégal</span></li>
+      <li><span>Modéliser l'UAV de référence</span></li>
+      <li><span>Réaliser l'optimisation topologique de la structure</span></li>
+      <li><span>Simuler et valider le comportement mécanique et aérodynamique de l'UAV optimisé</span></li>
+      <li><span>Comparer les performances avant et après optimisation</span></li>
+      <li><span>Mener l'idéation — rechercher des solutions potentielles et innovantes</span></li>
+      <li><span>Proposer un design final en vue de la fabrication</span></li>
+    </ol>
+  </section>
+
+  <section class="panel phase" id="p-modelisation">
+    <div class="eyebrow">04 — Modélisation</div>
+    <h2>Le modèle de référence</h2>
+    <p>Bras tubulaires, nacelles moteur, train d'atterrissage : ce modèle CAO sert de ligne de base à toute la démarche d'optimisation. C'est lui qu'il faut faire maigrir — sans le rendre plus fragile.</p>
+    <div class="gallery cols-2">
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/ref_render_color.jpg" alt="Rendu couleur du quadrirotor de référence" loading="lazy">
+        <div class="tilt-cap"><b>Modèle de référence</b> — rendu isométrique coloré</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/ref_render_gray.jpg" alt="Rendu neutre du quadrirotor de référence" loading="lazy">
+        <div class="tilt-cap"><b>Modèle de référence</b> — rendu studio</div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="panel phase hot" id="p-validation1">
+    <div class="eyebrow">05 — Validation initiale</div>
+    <h2>Avant d'optimiser, il faut mesurer</h2>
+    <div class="panel-body">
+      <p>Quatre analyses posent le diagnostic du modèle de référence : comportement structurel (contrainte de von Mises, déformation, déplacement), réponse thermique, qualité de maillage et écoulement aérodynamique (CFD).</p>
+      <div class="stat">
+        <div class="num mono" data-count-to="975" data-decimals="0" data-suffix="&nbsp;°C">0&nbsp;°C</div>
+        <div class="cap">pic thermique relevé sur la structure de référence, sous les conditions aux limites testées.</div>
+      </div>
+    </div>
+    <div class="gallery cols-3">
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/baseline_thermal_mesh.jpg" alt="Analyse thermique et maillage du modèle de référence" loading="lazy">
+        <div class="tilt-cap"><b>Thermique + maillage</b> — 9,75×10² °C à −2,48×10² °C</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/cfd_baseline_red.jpg" alt="Simulation CFD du modèle de référence" loading="lazy">
+        <div class="tilt-cap"><b>CFD</b> — viscosité cinématique turbulente</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/baseline_static_4panel.jpg" alt="Analyse statique de la première itération treillis" loading="lazy">
+        <div class="tilt-cap"><b>Statique</b> — von Mises max. 444 MPa · flèche max. 2,86×10⁻⁴ mm</div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="panel phase" id="p-topologie">
+    <div class="eyebrow">06 — Optimisation topologique</div>
+    <h2>Retirer la matière qui ne travaille pas</h2>
+    <p>L'optimisation redistribue la matière selon les lignes de charge réelles : les bras pleins deviennent des treillis, le plateau central s'ajoure. Ce qui ne contribue pas à la tenue structurelle disparaît.</p>
+    <div class="gallery cols-4">
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/topo_skeleton_ring.jpg" alt="Structure treillis optimisée, vue de dessus" loading="lazy">
+        <div class="tilt-cap">Treillis optimisé — dessus</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/topo_skeleton_below.jpg" alt="Structure treillis optimisée, vue de dessous" loading="lazy">
+        <div class="tilt-cap">Treillis optimisé — dessous</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/topo_skeleton_tan.jpg" alt="Structure treillis optimisée, vue perspective" loading="lazy">
+        <div class="tilt-cap">Treillis optimisé — perspective</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/final_render_red_exploded.jpg" alt="Vue éclatée du châssis optimisé" loading="lazy">
+        <div class="tilt-cap">Vue éclatée du châssis</div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="panel phase cool" id="p-validation2">
+    <div class="eyebrow">07 — Validation des itérations</div>
+    <h2>Chaque itération repasse au banc d'essai</h2>
+    <p>Deux nouveaux candidats, plus compacts, sont soumis au même protocole — statique, thermique, aérodynamique — pour confirmer que la perte de masse ne coûte rien en résistance.</p>
+    <div class="gallery cols-4">
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/optimized_static_v1_4panel.jpg" alt="Analyse statique — Modèle 1 UAV" loading="lazy">
+        <div class="tilt-cap"><b>Modèle 1 UAV</b> — von Mises max. 1,86×10⁻² MPa</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/optimized_static_v2_4panel.jpg" alt="Analyse statique — UAV affiné" loading="lazy">
+        <div class="tilt-cap"><b>UAV (affiné)</b> — von Mises max. 1,90×10⁻² MPa</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/cfd_optimized_purple.jpg" alt="Simulation CFD de la structure optimisée" loading="lazy">
+        <div class="tilt-cap">CFD — écoulement autour du châssis optimisé</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/cfd_optimized_yellow.jpg" alt="Simulation CFD — vitesse" loading="lazy">
+        <div class="tilt-cap">CFD — magnitude de vitesse</div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="panel phase" id="p-comparaison">
+    <div class="eyebrow">08 — Comparaison</div>
+    <h2>Avant / après, en chiffres</h2>
+    <div class="compare-split">
+      <div class="compare-half hot">
+        <div class="tag">Modèle de référence</div>
+        <div class="big mono" data-count-to="975.2" data-decimals="1" data-suffix="&nbsp;°C">0&nbsp;°C</div>
+        <div class="lbl">pic thermique</div>
+      </div>
+      <div class="compare-half cool">
+        <div class="tag">Design optimisé</div>
+        <div class="big mono" data-count-to="28.97" data-decimals="2" data-suffix="&nbsp;°C">0&nbsp;°C</div>
+        <div class="lbl">pic thermique</div>
+      </div>
+    </div>
+    <div class="compare-arrow">− 97&nbsp;% de pic thermique entre la structure de référence et l'itération optimisée</div>
+
+    <div class="data-table-wrap">
+      <table>
+        <thead>
+          <tr><th>Itération</th><th>von Mises max</th><th>Déplacement max (URES)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Treillis initial (validation 05)</td><td>444 MPa</td><td>2,86×10⁻⁴ mm</td></tr>
+          <tr><td class="name">Modèle 1 UAV</td><td>1,86×10⁻² MPa</td><td>1,98×10⁻⁴ mm</td></tr>
+          <tr><td class="name">UAV (affiné)</td><td>1,90×10⁻² MPa</td><td>1,39×10⁻⁴ mm</td></tr>
+          <tr><td class="name">Design final assemblé</td><td>1,02 MPa</td><td>1,07×10⁻² mm</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel phase cool" id="p-final">
+    <div class="eyebrow">09 — Design final</div>
+    <h2>Une proposition prête pour la fabrication</h2>
+    <p>Plateau ovale, colonne centrale, bras en treillis, nacelles moteur : le design final rassemble les enseignements de chaque itération. Validé en statique et en thermique, il est prêt pour le prototypage.</p>
+    <div class="final-hero-img">
+      <img src="assets/img/final_render_stand.jpg" alt="Rendu final du châssis optimisé sur son support" loading="lazy">
+    </div>
+    <div class="gallery cols-2" style="margin-top:22px;">
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/final_static_4panel.jpg" alt="Analyse statique du design final assemblé" loading="lazy">
+        <div class="tilt-cap"><b>Statique</b> — von Mises max. 1,02 MPa</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/final_thermal_mesh.jpg" alt="Analyse thermique du design final" loading="lazy">
+        <div class="tilt-cap"><b>Thermique + maillage</b> — pic 28,97 °C</div>
+      </div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-mark">Thème — Optimisation des UAV moyens avec rotor</div>
+    <h3>Fin de transmission. Prochaine étape : prototypage et essais en vol.</h3>
+    <p>Étude menée en quatre volets — statique, thermique, vibratoire (maillage) et aérodynamique — sur un quadrirotor moyen destiné à l'agriculture et à la surveillance en contexte sénégalais.</p>
+  </footer>
+
+</main>
+
+<script src="js/main.js"></script>
+<script type="module" src="js/viewer3d.js"></script>
+</body>
+</html>
