@@ -1,19 +1,22 @@
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // pause the hero video once it's off-screen (saves CPU/battery on a long page)
-  var heroVideo = document.querySelector('.hero-video');
-  if(heroVideo){
-    if(reduced){
-      heroVideo.pause();
-    } else {
+  // hero video: don't compete with critical resources on first paint —
+  // start playback only once the page has settled, then pause off-screen
+  // (saves CPU/battery on a long page)
+  var heroVideo = document.getElementById('heroVideo');
+  if(heroVideo && !reduced){
+    var startVideo = function(){
+      heroVideo.play().catch(function(){});
       new IntersectionObserver(function(entries){
         entries.forEach(function(e){
           if(e.isIntersecting){ heroVideo.play().catch(function(){}); }
           else{ heroVideo.pause(); }
         });
       }, {threshold:0.05}).observe(heroVideo);
-    }
+    };
+    if(document.readyState === 'complete'){ startVideo(); }
+    else{ window.addEventListener('load', startVideo, {once:true}); }
   }
 
   // rail progress + active dot + click/keyboard nav
