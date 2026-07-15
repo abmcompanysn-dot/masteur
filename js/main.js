@@ -1,6 +1,21 @@
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // pause the hero video once it's off-screen (saves CPU/battery on a long page)
+  var heroVideo = document.querySelector('.hero-video');
+  if(heroVideo){
+    if(reduced){
+      heroVideo.pause();
+    } else {
+      new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ heroVideo.play().catch(function(){}); }
+          else{ heroVideo.pause(); }
+        });
+      }, {threshold:0.05}).observe(heroVideo);
+    }
+  }
+
   // rail progress + active dot + click/keyboard nav
   var dots = Array.prototype.slice.call(document.querySelectorAll('.rail-dot'));
   var targets = dots.map(function(d){ return document.getElementById(d.getAttribute('data-target')); });
