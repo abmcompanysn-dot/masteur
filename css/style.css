@@ -436,6 +436,15 @@ td.name{font-family:var(--font-body);color:var(--ink-dim);}
 .final-hero-img{margin-top:40px;border:1px solid var(--line);background:var(--bg-card);overflow:hidden;}
 .final-hero-img img{width:100%;}
 
+/* ---------- prototype video ---------- */
+.video-block{margin-top:40px;max-width:900px;}
+.video-block video{
+  width:100%;
+  display:block;
+  border:1px solid var(--line);
+  background:#000;
+}
+
 footer{
   padding:80px clamp(20px,7vw,96px) 60px;
   border-top:1px solid var(--line);
