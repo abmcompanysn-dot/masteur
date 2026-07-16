@@ -8,7 +8,7 @@
   var ambientHot = document.getElementById('ambientHot');
   var ambientCool = document.getElementById('ambientCool');
   var HOT_PHASES = {1:1, 5:1};
-  var COOL_PHASES = {6:1, 7:1, 9:1};
+  var COOL_PHASES = {7:1, 8:1, 10:1};
 
   function goTo(d){
     var t = document.getElementById(d.getAttribute('data-target'));
@@ -38,7 +38,8 @@
     });
     document.querySelectorAll(
       '.panel h2, .panel-body p, .panel > p, .stat, blockquote, .quote-note, ' +
-      '.compare-half, .compare-arrow, .final-hero-img, .obj-general, footer h3, footer p'
+      '.compare-half, .compare-arrow, .final-hero-img, .obj-general, footer h3, footer p, ' +
+      '.figure-block, .figure-caption, .sub-heading'
     ).forEach(function(el){ el.classList.add('scrub'); if(el.dataset.delay===undefined) el.dataset.delay = 0; });
 
     document.querySelectorAll('.tilt-inner').forEach(function(el){ el.classList.add('scrub-wipe'); });

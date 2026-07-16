@@ -28,10 +28,11 @@
     <div class="rail-dot" data-target="p-objectifs" tabindex="0" role="button" aria-label="Aller à Objectifs"><span class="rail-label">03 · OBJECTIFS</span></div>
     <div class="rail-dot" data-target="p-modelisation" tabindex="0" role="button" aria-label="Aller à Modélisation"><span class="rail-label">04 · MODÉLISATION</span></div>
     <div class="rail-dot" data-target="p-validation1" tabindex="0" role="button" aria-label="Aller à Validation initiale"><span class="rail-label">05 · VALIDATION I</span></div>
-    <div class="rail-dot" data-target="p-topologie" tabindex="0" role="button" aria-label="Aller à Optimisation topologique"><span class="rail-label">06 · TOPOLOGIE</span></div>
-    <div class="rail-dot" data-target="p-validation2" tabindex="0" role="button" aria-label="Aller à Validation des itérations"><span class="rail-label">07 · VALIDATION II</span></div>
-    <div class="rail-dot" data-target="p-comparaison" tabindex="0" role="button" aria-label="Aller à Comparaison"><span class="rail-label">08 · COMPARAISON</span></div>
-    <div class="rail-dot" data-target="p-final" tabindex="0" role="button" aria-label="Aller à Design final"><span class="rail-label">09 · DESIGN FINAL</span></div>
+    <div class="rail-dot" data-target="p-ideation" tabindex="0" role="button" aria-label="Aller à Idéation"><span class="rail-label">06 · IDÉATION</span></div>
+    <div class="rail-dot" data-target="p-topologie" tabindex="0" role="button" aria-label="Aller à Optimisation topologique"><span class="rail-label">07 · TOPOLOGIE</span></div>
+    <div class="rail-dot" data-target="p-validation2" tabindex="0" role="button" aria-label="Aller à Validation des itérations"><span class="rail-label">08 · VALIDATION II</span></div>
+    <div class="rail-dot" data-target="p-comparaison" tabindex="0" role="button" aria-label="Aller à Comparaison"><span class="rail-label">09 · COMPARAISON</span></div>
+    <div class="rail-dot" data-target="p-final" tabindex="0" role="button" aria-label="Aller à Design final"><span class="rail-label">10 · DESIGN FINAL</span></div>
   </div>
 </div>
 
@@ -72,6 +73,12 @@
         <div class="cap">drone moyen (2–10&nbsp;kg) sur le marché sénégalais capable de décoller avec 10&nbsp;kg de charge utile <em>et</em> de voler plus de 60 minutes.</div>
       </div>
     </div>
+    <div class="figure-block">
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/fig1_uav_types.jpg" alt="Arbre de catégories des UAV existants" loading="lazy">
+      </div></div>
+      <div class="figure-caption">Figure 1 — Les types d'UAV existants : rotor unique, multirotor, voilure fixe, hybride. Le quadrirotor moyen se situe dans la famille multirotor.</div>
+    </div>
   </section>
 
   <section class="panel quote-section" id="p-question">
@@ -106,12 +113,12 @@
     <p>Bras tubulaires, nacelles moteur, train d'atterrissage : ce modèle CAO sert de ligne de base à toute la démarche d'optimisation. C'est lui qu'il faut faire maigrir — sans le rendre plus fragile.</p>
     <div class="gallery cols-2">
       <div class="tilt-card"><div class="tilt-inner">
-        <img src="assets/img/ref_render_color.jpg" alt="Rendu couleur du quadrirotor de référence" loading="lazy">
-        <div class="tilt-cap"><b>Modèle de référence</b> — rendu isométrique coloré</div>
+        <img src="assets/img/ref_render_gray.jpg" alt="Rendu du quadrirotor de référence, vue isométrique" loading="lazy">
+        <div class="tilt-cap"><b>Figure 3</b> — Modèle de référence UAV moyen quadrirotor</div>
       </div></div>
       <div class="tilt-card"><div class="tilt-inner">
-        <img src="assets/img/ref_render_gray.jpg" alt="Rendu neutre du quadrirotor de référence" loading="lazy">
-        <div class="tilt-cap"><b>Modèle de référence</b> — rendu studio</div>
+        <img src="assets/img/fig7_topo_setup.jpg" alt="Repérage des zones de conception sur le modèle de référence" loading="lazy">
+        <div class="tilt-cap"><b>Espace de conception</b> — zones à optimiser (jaune), zones fixes (vert), zones interdites (rouge), fixations (bleu)</div>
       </div></div>
     </div>
   </section>
@@ -120,56 +127,120 @@
     <div class="eyebrow">05 — Validation initiale</div>
     <h2>Avant d'optimiser, il faut mesurer</h2>
     <div class="panel-body">
-      <p>Quatre analyses posent le diagnostic du modèle de référence : comportement structurel (contrainte de von Mises, déformation, déplacement), réponse thermique, qualité de maillage et écoulement aérodynamique (CFD).</p>
+      <p>Quatre analyses posent le diagnostic du modèle de référence : comportement structurel (contrainte de von Mises, déformation, déplacement), réponse vibratoire (fréquences propres), réponse thermique et écoulement aérodynamique (CFD).</p>
       <div class="stat">
-        <div class="num mono" data-count-to="975" data-decimals="0" data-suffix="&nbsp;°C">0&nbsp;°C</div>
-        <div class="cap">pic thermique relevé sur la structure de référence, sous les conditions aux limites testées.</div>
+        <div class="num mono" data-count-to="40.33" data-decimals="2" data-suffix="&nbsp;°C">0&nbsp;°C</div>
+        <div class="cap">pic thermique relevé sur la structure de référence (Figure 5), sous les conditions aux limites testées.</div>
       </div>
     </div>
     <div class="gallery cols-3">
       <div class="tilt-card"><div class="tilt-inner">
-        <img src="assets/img/baseline_thermal_mesh.jpg" alt="Analyse thermique et maillage du modèle de référence" loading="lazy">
-        <div class="tilt-cap"><b>Thermique + maillage</b> — 9,75×10² °C à −2,48×10² °C</div>
+        <img src="assets/img/fig4_ref_static.jpg" alt="Analyse statique du modèle de référence, contrainte, déformation, déplacement et maillage" loading="lazy">
+        <div class="tilt-cap"><b>Figure 4</b> — Statique : von Mises max. 1,022 MPa · flèche max. 1,07×10⁻² mm</div>
       </div></div>
       <div class="tilt-card"><div class="tilt-inner">
-        <img src="assets/img/cfd_baseline_red.jpg" alt="Simulation CFD du modèle de référence" loading="lazy">
-        <div class="tilt-cap"><b>CFD</b> — viscosité cinématique turbulente</div>
+        <img src="assets/img/fig5_ref_thermal.jpg" alt="Analyse thermique et maillage du modèle de référence" loading="lazy">
+        <div class="tilt-cap"><b>Figure 5</b> — Thermique : 25,0 °C à 40,33 °C</div>
       </div></div>
       <div class="tilt-card"><div class="tilt-inner">
-        <img src="assets/img/baseline_static_4panel.jpg" alt="Analyse statique de la première itération treillis" loading="lazy">
-        <div class="tilt-cap"><b>Statique</b> — von Mises max. 444 MPa · flèche max. 2,86×10⁻⁴ mm</div>
+        <img src="assets/img/fig6_ref_vibratory.jpg" alt="Analyse vibratoire, modes propres du modèle de référence" loading="lazy">
+        <div class="tilt-cap"><b>Figure 6</b> — Vibratoire : mode 3 à 90,3 Hz, mode 4 à 532,1 Hz</div>
+      </div></div>
+    </div>
+    <div class="sub-heading">Simulations aérodynamiques (CFD)</div>
+    <div class="gallery cols-4">
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/aero_ref_1.jpg" alt="CFD modèle de référence — pression et viscosité cinématique turbulente, coupe" loading="lazy">
+        <div class="tilt-cap">Pression · viscosité cinématique turbulente</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/aero_ref_2.jpg" alt="CFD modèle de référence — pression et viscosité cinématique turbulente, vue complète" loading="lazy">
+        <div class="tilt-cap">Sillage — pression · viscosité turbulente</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/aero_ref_3.jpg" alt="CFD modèle de référence — vitesse X et Y" loading="lazy">
+        <div class="tilt-cap">Vitesse X · vitesse Y</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/aero_ref_4.jpg" alt="CFD modèle de référence — énergie cinétique turbulente et magnitude de vitesse" loading="lazy">
+        <div class="tilt-cap">Énergie cinétique turbulente · magnitude de vitesse</div>
+      </div></div>
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/aero_ref_5.jpg" alt="CFD modèle de référence — pression et taux de dissipation spécifique" loading="lazy">
+        <div class="tilt-cap">Pression · taux de dissipation spécifique (ω)</div>
       </div></div>
     </div>
   </section>
 
-  <section class="panel phase" id="p-topologie">
-    <div class="eyebrow">06 — Optimisation topologique</div>
-    <h2>Retirer la matière qui ne travaille pas</h2>
-    <p>L'optimisation redistribue la matière selon les lignes de charge réelles : les bras pleins deviennent des treillis, le plateau central s'ajoure. Ce qui ne contribue pas à la tenue structurelle disparaît.</p>
-    <div class="gallery cols-4">
+  <section class="panel phase" id="p-ideation">
+    <div class="eyebrow">06 — Idéation</div>
+    <h2>De l'objectif au bras optimisé</h2>
+    <p>La théorie C/K (Concepts–Connaissances) structure la recherche de solutions : à partir de l'objectif général, quatre concepts sont explorés — réduire les pertes, réduire la masse, augmenter la durabilité, un bras multifonction. Leur croisement avec les connaissances disponibles converge vers une conjonction unique : un <b>bras moteur optimisé topologiquement, en treillis, multifonction et anti-vibratoire</b> — c'est cette pièce qui devient la cible de l'optimisation générative.</p>
+    <div class="figure-block">
       <div class="tilt-card"><div class="tilt-inner">
-        <img src="assets/img/topo_skeleton_ring.jpg" alt="Structure treillis optimisée, vue de dessus" loading="lazy">
-        <div class="tilt-cap">Treillis optimisé — dessus</div>
+        <img src="assets/img/fig2_ideation_ck.jpg" alt="Diagramme de la théorie Concepts-Connaissances appliqué à l'optimisation de l'UAV" loading="lazy">
+      </div></div>
+      <div class="figure-caption">Figure 2 — La phase d'idéation, à la recherche d'une meilleure solution (théorie C/K)</div>
+    </div>
+  </section>
+
+  <section class="panel phase cool" id="p-topologie">
+    <div class="eyebrow">07 — Optimisation topologique</div>
+    <h2>Deux itérations de conception générative</h2>
+    <p>Le bras moteur identifié par l'idéation passe par un solveur de conception générative : la matière est redistribuée automatiquement selon les charges réelles, en respectant les zones fixes (vert), les zones interdites — hélice, moteur — (rouge) et les points de fixation (bleu).</p>
+
+    <div class="sub-heading">Itération 1 — bras seul</div>
+    <div class="gallery cols-2">
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/fig8_iter1_setup.jpg" alt="Paramétrage de l'itération 1 pour l'optimisation topologique" loading="lazy">
+        <div class="tilt-cap"><b>Figure 8</b> — Paramétrage de l'itération 1</div>
       </div></div>
       <div class="tilt-card"><div class="tilt-inner">
-        <img src="assets/img/topo_skeleton_below.jpg" alt="Structure treillis optimisée, vue de dessous" loading="lazy">
-        <div class="tilt-cap">Treillis optimisé — dessous</div>
+        <img src="assets/img/results_iter1.jpg" alt="Résultats générés pour l'itération 1" loading="lazy">
+        <div class="tilt-cap">Résultats générés — de 0,04 à 0,11 kg selon matériau et méthode de fabrication</div>
+      </div></div>
+    </div>
+    <div class="stat" style="margin-top:32px;">
+      <div class="num mono" data-count-to="0.043" data-decimals="3" data-suffix="&nbsp;kg">0&nbsp;kg</div>
+      <div class="cap">meilleur résultat retenu (itération 24, convergée) — plastique ABS, additif, von Mises max. 0,374 MPa, coefficient de sécurité min. 53,5, flèche max. 0,053 mm.</div>
+    </div>
+    <div class="gallery cols-1" style="max-width:640px;">
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/choix_meilleur_iter1.jpg" alt="Choix du meilleur résultat de l'itération 1" loading="lazy">
+        <div class="tilt-cap">Choix du meilleur résultat — itération 1</div>
+      </div></div>
+    </div>
+
+    <div class="sub-heading">Itération 2 — assemblage complet</div>
+    <div class="gallery cols-2">
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/fig9_iter2_setup.jpg" alt="Paramétrage de l'itération 2" loading="lazy">
+        <div class="tilt-cap"><b>Figure 9</b> — Paramétrage de l'itération 2</div>
       </div></div>
       <div class="tilt-card"><div class="tilt-inner">
-        <img src="assets/img/topo_skeleton_tan.jpg" alt="Structure treillis optimisée, vue perspective" loading="lazy">
-        <div class="tilt-cap">Treillis optimisé — perspective</div>
+        <img src="assets/img/results_iter2.jpg" alt="Résultats générés pour l'itération 2" loading="lazy">
+        <div class="tilt-cap">Résultats générés — assemblage complet, plusieurs candidats convergés</div>
+      </div></div>
+    </div>
+
+    <div class="sub-heading">Lissage des modèles choisis</div>
+    <p>Les meilleurs candidats générés sont ensuite lissés pour obtenir une surface propre et fabricable, tout en conservant les lignes de charge issues de l'optimisation.</p>
+    <div class="gallery cols-2">
+      <div class="tilt-card"><div class="tilt-inner">
+        <img src="assets/img/lissage_1.jpg" alt="Lissage des modèles choisis, vue 1" loading="lazy">
+        <div class="tilt-cap">Candidats lissés — vues 1 et 2</div>
       </div></div>
       <div class="tilt-card"><div class="tilt-inner">
-        <img src="assets/img/final_render_red_exploded.jpg" alt="Vue éclatée du châssis optimisé" loading="lazy">
-        <div class="tilt-cap">Vue éclatée du châssis</div>
+        <img src="assets/img/lissage_2.jpg" alt="Lissage des modèles choisis, vue 2" loading="lazy">
+        <div class="tilt-cap">Candidats lissés — vues 3 et 4</div>
       </div></div>
     </div>
   </section>
 
   <section class="panel phase cool" id="p-validation2">
-    <div class="eyebrow">07 — Validation des itérations</div>
+    <div class="eyebrow">08 — Validation des itérations</div>
     <h2>Chaque itération repasse au banc d'essai</h2>
-    <p>Deux nouveaux candidats, plus compacts, sont soumis au même protocole — statique, thermique, aérodynamique — pour confirmer que la perte de masse ne coûte rien en résistance.</p>
+    <p>Le design lissé, plus compact, est soumis au même protocole que le modèle de référence — statique, thermique, aérodynamique — pour confirmer que la perte de masse ne coûte rien en résistance.</p>
     <div class="gallery cols-4">
       <div class="tilt-card"><div class="tilt-inner">
         <img src="assets/img/optimized_static_v1_4panel.jpg" alt="Analyse statique — Modèle 1 UAV" loading="lazy">
@@ -191,12 +262,12 @@
   </section>
 
   <section class="panel phase" id="p-comparaison">
-    <div class="eyebrow">08 — Comparaison</div>
+    <div class="eyebrow">09 — Comparaison</div>
     <h2>Avant / après, en chiffres</h2>
     <div class="compare-split">
       <div class="compare-half hot">
         <div class="tag">Modèle de référence</div>
-        <div class="big mono" data-count-to="975.2" data-decimals="1" data-suffix="&nbsp;°C">0&nbsp;°C</div>
+        <div class="big mono" data-count-to="40.33" data-decimals="2" data-suffix="&nbsp;°C">0&nbsp;°C</div>
         <div class="lbl">pic thermique</div>
       </div>
       <div class="compare-half cool">
@@ -205,7 +276,7 @@
         <div class="lbl">pic thermique</div>
       </div>
     </div>
-    <div class="compare-arrow">− 97&nbsp;% de pic thermique entre la structure de référence et l'itération optimisée</div>
+    <div class="compare-arrow">− 28&nbsp;% de pic thermique entre la structure de référence et le design optimisé</div>
 
     <div class="data-table-wrap">
       <table>
@@ -213,27 +284,23 @@
           <tr><th>Itération</th><th>von Mises max</th><th>Déplacement max (URES)</th></tr>
         </thead>
         <tbody>
-          <tr><td class="name">Treillis initial (validation 05)</td><td>444 MPa</td><td>2,86×10⁻⁴ mm</td></tr>
-          <tr><td class="name">Modèle 1 UAV</td><td>1,86×10⁻² MPa</td><td>1,98×10⁻⁴ mm</td></tr>
-          <tr><td class="name">UAV (affiné)</td><td>1,90×10⁻² MPa</td><td>1,39×10⁻⁴ mm</td></tr>
-          <tr><td class="name">Design final assemblé</td><td>1,02 MPa</td><td>1,07×10⁻² mm</td></tr>
+          <tr><td class="name">Modèle de référence (Figure 4)</td><td>1,022 MPa</td><td>1,07×10⁻² mm</td></tr>
+          <tr><td class="name">Meilleur candidat — itération 1</td><td>0,374 MPa</td><td>5,3×10⁻² mm</td></tr>
+          <tr><td class="name">Modèle 1 UAV (validation 08)</td><td>1,86×10⁻² MPa</td><td>1,98×10⁻⁴ mm</td></tr>
+          <tr><td class="name">UAV affiné (validation 08)</td><td>1,90×10⁻² MPa</td><td>1,39×10⁻⁴ mm</td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
   <section class="panel phase cool" id="p-final">
-    <div class="eyebrow">09 — Design final</div>
+    <div class="eyebrow">10 — Design final</div>
     <h2>Une proposition prête pour la fabrication</h2>
-    <p>Plateau ovale, colonne centrale, bras en treillis, nacelles moteur : le design final rassemble les enseignements de chaque itération. Validé en statique et en thermique, il est prêt pour le prototypage.</p>
+    <p>Plateau ovale, colonne centrale, bras en treillis, nacelles moteur : le design final rassemble les enseignements de l'idéation, de l'optimisation générative et du lissage. Validé en statique et en thermique, il est prêt pour le prototypage.</p>
     <div class="final-hero-img">
       <img src="assets/img/final_render_stand.jpg" alt="Rendu final du châssis optimisé sur son support" loading="lazy">
     </div>
-    <div class="gallery cols-2" style="margin-top:22px;">
-      <div class="tilt-card"><div class="tilt-inner">
-        <img src="assets/img/final_static_4panel.jpg" alt="Analyse statique du design final assemblé" loading="lazy">
-        <div class="tilt-cap"><b>Statique</b> — von Mises max. 1,02 MPa</div>
-      </div></div>
+    <div class="gallery cols-1" style="margin-top:22px;max-width:640px;">
       <div class="tilt-card"><div class="tilt-inner">
         <img src="assets/img/final_thermal_mesh.jpg" alt="Analyse thermique du design final" loading="lazy">
         <div class="tilt-cap"><b>Thermique + maillage</b> — pic 28,97 °C</div>
@@ -244,7 +311,7 @@
   <footer>
     <div class="foot-mark">Thème — Optimisation des UAV moyens avec rotor</div>
     <h3>Fin de transmission. Prochaine étape : prototypage et essais en vol.</h3>
-    <p>Étude menée en quatre volets — statique, thermique, vibratoire (maillage) et aérodynamique — sur un quadrirotor moyen destiné à l'agriculture et à la surveillance en contexte sénégalais.</p>
+    <p>Étude menée en quatre volets — statique, thermique, vibratoire et aérodynamique — sur un quadrirotor moyen destiné à l'agriculture et à la surveillance en contexte sénégalais.</p>
   </footer>
 
 </main>
