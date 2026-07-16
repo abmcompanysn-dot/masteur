@@ -165,24 +165,6 @@ section{
   max-width:none;
   overflow:hidden;
 }
-.hero-video{
-  position:absolute;
-  inset:0;
-  width:100%;height:100%;
-  object-fit:cover;
-  object-position:center 80%;
-  z-index:0;
-}
-.hero-video-scrim{
-  position:absolute;inset:0;z-index:0;
-  background:
-    linear-gradient(180deg, rgba(10,12,13,.55) 0%, rgba(10,12,13,.72) 55%, var(--bg) 100%),
-    linear-gradient(90deg, rgba(10,12,13,.85) 0%, rgba(10,12,13,.35) 55%, rgba(10,12,13,.7) 100%);
-}
-@media (prefers-reduced-motion:reduce){
-  .hero-video{display:none;}
-  .hero-video-scrim{background:var(--bg);}
-}
 .hero-grid{
   position:relative;
   z-index:1;

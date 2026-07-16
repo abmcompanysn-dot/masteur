@@ -1,24 +1,6 @@
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // hero video: don't compete with critical resources on first paint —
-  // start playback only once the page has settled, then pause off-screen
-  // (saves CPU/battery on a long page)
-  var heroVideo = document.getElementById('heroVideo');
-  if(heroVideo && !reduced){
-    var startVideo = function(){
-      heroVideo.play().catch(function(){});
-      new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          if(e.isIntersecting){ heroVideo.play().catch(function(){}); }
-          else{ heroVideo.pause(); }
-        });
-      }, {threshold:0.05}).observe(heroVideo);
-    };
-    if(document.readyState === 'complete'){ startVideo(); }
-    else{ window.addEventListener('load', startVideo, {once:true}); }
-  }
-
   // rail progress + active dot + click/keyboard nav
   var dots = Array.prototype.slice.call(document.querySelectorAll('.rail-dot'));
   var targets = dots.map(function(d){ return document.getElementById(d.getAttribute('data-target')); });
