@@ -192,18 +192,29 @@
 
     <div class="sub-heading">Comparer les itérations en 3D</div>
     <div class="iter-viewer" id="iterViewer">
-      <div class="iter-stage">
-        <div id="iterCanvas"></div>
-        <div class="iter-loading" id="iterLoading">Chargement…</div>
+      <div class="iter-grid">
+        <div class="iter-cell" data-stl="iteration1">
+          <div class="iter-stage"><div class="iter-canvas"></div><div class="iter-loading">Chargement…</div></div>
+          <div class="iter-cell-label">Itération 1</div>
+        </div>
+        <div class="iter-cell" data-stl="iteration2">
+          <div class="iter-stage"><div class="iter-canvas"></div><div class="iter-loading">Chargement…</div></div>
+          <div class="iter-cell-label">Itération 2</div>
+        </div>
+        <div class="iter-cell" data-stl="iteration3">
+          <div class="iter-stage"><div class="iter-canvas"></div><div class="iter-loading">Chargement…</div></div>
+          <div class="iter-cell-label">Itération 3</div>
+        </div>
+        <div class="iter-cell" data-stl="iteration4">
+          <div class="iter-stage"><div class="iter-canvas"></div><div class="iter-loading">Chargement…</div></div>
+          <div class="iter-cell-label">Itération 4</div>
+        </div>
+        <div class="iter-cell" data-stl="iteration5">
+          <div class="iter-stage"><div class="iter-canvas"></div><div class="iter-loading">Chargement…</div></div>
+          <div class="iter-cell-label">Itération 5</div>
+        </div>
       </div>
-      <div class="iter-tabs" id="iterTabs" role="tablist" aria-label="Choisir une itération">
-        <button type="button" class="iter-tab active" data-stl="iteration1" aria-pressed="true">Itération 1</button>
-        <button type="button" class="iter-tab" data-stl="iteration2" aria-pressed="false">Itération 2</button>
-        <button type="button" class="iter-tab" data-stl="iteration3" aria-pressed="false">Itération 3</button>
-        <button type="button" class="iter-tab" data-stl="iteration4" aria-pressed="false">Itération 4</button>
-        <button type="button" class="iter-tab" data-stl="iteration5" aria-pressed="false">Itération 5</button>
-      </div>
-      <div class="figure-caption">Forme du bras optimisé à cinq étapes de la conception générative — glisser pour tourner.</div>
+      <div class="figure-caption">Forme du bras optimisé à cinq étapes de la conception générative — glisser chaque modèle pour le tourner.</div>
     </div>
 
     <div class="sub-heading">Itération 1 — bras seul</div>

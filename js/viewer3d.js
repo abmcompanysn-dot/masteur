@@ -146,20 +146,19 @@ init().catch((e) => {
   if (loadingEl) loadingEl.style.display = 'none';
 });
 
-/* ---- single-mesh viewer for comparing the arm across generative-design iterations ---- */
-function initIterationViewer() {
-  const root = document.getElementById('iterViewer');
-  const container = document.getElementById('iterCanvas');
-  const loadingEl = document.getElementById('iterLoading');
-  const tabsEl = document.getElementById('iterTabs');
-  if (!root || !container || !tabsEl) return;
+/* ---- side-by-side viewers comparing the arm across generative-design iterations ---- */
+function initIterationCell(cell) {
+  const container = cell.querySelector('.iter-canvas');
+  const loadingEl = cell.querySelector('.iter-loading');
+  const stlKey = cell.dataset.stl;
+  if (!container || !stlKey) return null;
 
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({ antialias: true });
   } catch (e) {
-    root.style.display = 'none';
-    return;
+    cell.style.display = 'none';
+    return null;
   }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setClearColor(0x14181a, 1);
@@ -184,55 +183,14 @@ function initIterationViewer() {
   controls.minDistance = 1.0;
   controls.maxDistance = 5;
 
-  const loader = new STLLoader();
-  const cache = new Map();
-  let currentMesh = null;
   let autoRotate = true;
   let idleTimer = null;
-
   controls.addEventListener('start', () => {
     autoRotate = false;
     if (idleTimer) clearTimeout(idleTimer);
   });
   controls.addEventListener('end', () => {
     idleTimer = setTimeout(() => { autoRotate = true; }, 3200);
-  });
-
-  function frameMesh(mesh) {
-    const box = new THREE.Box3().setFromObject(mesh);
-    const center = box.getCenter(new THREE.Vector3());
-    const size = box.getSize(new THREE.Vector3());
-    const extent = Math.max(size.x, size.y, size.z) || 1;
-    const scale = 1.7 / extent;
-    mesh.position.sub(center.multiplyScalar(scale));
-    mesh.scale.setScalar(scale);
-  }
-
-  async function showIteration(key) {
-    if (loadingEl) loadingEl.classList.remove('hidden');
-    let geometry = cache.get(key);
-    if (!geometry) {
-      geometry = await loader.loadAsync(`assets/stl/${key}.stl`);
-      geometry.computeVertexNormals();
-      cache.set(key, geometry);
-    }
-    if (currentMesh) { scene.remove(currentMesh); }
-    const material = new THREE.MeshStandardMaterial({ color: 0x74b8d6, roughness: 0.5, metalness: 0.15 });
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-    frameMesh(mesh);
-    currentMesh = mesh;
-    if (loadingEl) loadingEl.classList.add('hidden');
-  }
-
-  Array.prototype.forEach.call(tabsEl.children, (btn) => {
-    btn.addEventListener('click', () => {
-      Array.prototype.forEach.call(tabsEl.children, (b) => {
-        b.classList.toggle('active', b === btn);
-        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
-      });
-      showIteration(btn.dataset.stl).catch((e) => console.error('iteration STL load failed:', e));
-    });
   });
 
   function resize() {
@@ -245,18 +203,47 @@ function initIterationViewer() {
   new ResizeObserver(resize).observe(container);
   resize();
 
+  let mesh = null;
   renderer.setAnimationLoop(() => {
-    if (autoRotate && currentMesh) currentMesh.rotation.y += 0.003;
+    if (autoRotate && mesh) mesh.rotation.y += 0.003;
     controls.update();
     renderer.render(scene, camera);
   });
+
+  async function load() {
+    const loader = new STLLoader();
+    const geometry = await loader.loadAsync(`assets/stl/${stlKey}.stl`);
+    geometry.computeVertexNormals();
+    const material = new THREE.MeshStandardMaterial({ color: 0x74b8d6, roughness: 0.5, metalness: 0.15 });
+    mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    const box = new THREE.Box3().setFromObject(mesh);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+    const extent = Math.max(size.x, size.y, size.z) || 1;
+    const scale = 1.7 / extent;
+    mesh.position.sub(center.multiplyScalar(scale));
+    mesh.scale.setScalar(scale);
+
+    if (loadingEl) loadingEl.classList.add('hidden');
+  }
+
+  return { load };
+}
+
+function initIterationViewer() {
+  const root = document.getElementById('iterViewer');
+  if (!root) return;
+  const cells = Array.prototype.slice.call(root.querySelectorAll('.iter-cell'));
+  const viewers = cells.map(initIterationCell).filter(Boolean);
 
   let started = false;
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (e.isIntersecting && !started) {
         started = true;
-        showIteration('iteration1').catch((err) => console.error('iteration STL load failed:', err));
+        viewers.forEach((v) => v.load().catch((err) => console.error('iteration STL load failed:', err)));
         io.disconnect();
       }
     });

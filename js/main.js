@@ -39,7 +39,7 @@
     document.querySelectorAll(
       '.panel h2, .panel-body p, .panel > p, .stat, blockquote, .quote-note, ' +
       '.compare-half, .compare-arrow, .final-hero-img, .obj-general, footer h3, footer p, ' +
-      '.figure-block, .figure-caption, .sub-heading, .video-block'
+      '.figure-block, .figure-caption, .sub-heading, .video-block, .iter-viewer'
     ).forEach(function(el){ el.classList.add('scrub'); if(el.dataset.delay===undefined) el.dataset.delay = 0; });
 
     document.querySelectorAll('.tilt-inner').forEach(function(el){ el.classList.add('scrub-wipe'); });
