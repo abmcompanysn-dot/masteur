@@ -46,7 +46,7 @@
     <div class="hero-grid">
       <div>
         <div class="hero-eyebrow">Mémoire de recherche — Génie aéronautique</div>
-        <h1>Moins de masse.<br><span class="l2">Plus d'autonomie.</span><span class="l3">Même ciel sénégalais.</span></h1>
+        <h1>Moins de masse.<br><span class="l2">Plus d'autonomie.</span></h1>
         <p class="hero-lede">Une démarche d'optimisation topologique pour les UAV quadrirotors moyens (2–10&nbsp;kg), pensée pour l'agriculture et la surveillance sous le climat sénégalais.</p>
       </div>
       <div class="hero-stage">
@@ -189,6 +189,22 @@
     <div class="eyebrow">07 — Optimisation topologique</div>
     <h2>Deux itérations de conception générative</h2>
     <p>Le bras moteur identifié par l'idéation passe par un solveur de conception générative : la matière est redistribuée automatiquement selon les charges réelles, en respectant les zones fixes (vert), les zones interdites — hélice, moteur — (rouge) et les points de fixation (bleu).</p>
+
+    <div class="sub-heading">Comparer les itérations en 3D</div>
+    <div class="iter-viewer" id="iterViewer">
+      <div class="iter-stage">
+        <div id="iterCanvas"></div>
+        <div class="iter-loading" id="iterLoading">Chargement…</div>
+      </div>
+      <div class="iter-tabs" id="iterTabs" role="tablist" aria-label="Choisir une itération">
+        <button type="button" class="iter-tab active" data-stl="iteration1" aria-pressed="true">Itération 1</button>
+        <button type="button" class="iter-tab" data-stl="iteration2" aria-pressed="false">Itération 2</button>
+        <button type="button" class="iter-tab" data-stl="iteration3" aria-pressed="false">Itération 3</button>
+        <button type="button" class="iter-tab" data-stl="iteration4" aria-pressed="false">Itération 4</button>
+        <button type="button" class="iter-tab" data-stl="iteration5" aria-pressed="false">Itération 5</button>
+      </div>
+      <div class="figure-caption">Forme du bras optimisé à cinq étapes de la conception générative — glisser pour tourner.</div>
+    </div>
 
     <div class="sub-heading">Itération 1 — bras seul</div>
     <div class="gallery cols-2">

@@ -145,3 +145,123 @@ init().catch((e) => {
   if (stage) stage.classList.add('no-webgl');
   if (loadingEl) loadingEl.style.display = 'none';
 });
+
+/* ---- single-mesh viewer for comparing the arm across generative-design iterations ---- */
+function initIterationViewer() {
+  const root = document.getElementById('iterViewer');
+  const container = document.getElementById('iterCanvas');
+  const loadingEl = document.getElementById('iterLoading');
+  const tabsEl = document.getElementById('iterTabs');
+  if (!root || !container || !tabsEl) return;
+
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+  } catch (e) {
+    root.style.display = 'none';
+    return;
+  }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setClearColor(0x14181a, 1);
+  container.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+  camera.position.set(1.8, 1.4, 2.2);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const key = new THREE.DirectionalLight(0xffffff, 1.1);
+  key.position.set(3, 5, 4);
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(0x34c3ff, 0.55);
+  rim.position.set(-4, 2, -3);
+  scene.add(rim);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.enablePan = false;
+  controls.minDistance = 1.0;
+  controls.maxDistance = 5;
+
+  const loader = new STLLoader();
+  const cache = new Map();
+  let currentMesh = null;
+  let autoRotate = true;
+  let idleTimer = null;
+
+  controls.addEventListener('start', () => {
+    autoRotate = false;
+    if (idleTimer) clearTimeout(idleTimer);
+  });
+  controls.addEventListener('end', () => {
+    idleTimer = setTimeout(() => { autoRotate = true; }, 3200);
+  });
+
+  function frameMesh(mesh) {
+    const box = new THREE.Box3().setFromObject(mesh);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+    const extent = Math.max(size.x, size.y, size.z) || 1;
+    const scale = 1.7 / extent;
+    mesh.position.sub(center.multiplyScalar(scale));
+    mesh.scale.setScalar(scale);
+  }
+
+  async function showIteration(key) {
+    if (loadingEl) loadingEl.classList.remove('hidden');
+    let geometry = cache.get(key);
+    if (!geometry) {
+      geometry = await loader.loadAsync(`assets/stl/${key}.stl`);
+      geometry.computeVertexNormals();
+      cache.set(key, geometry);
+    }
+    if (currentMesh) { scene.remove(currentMesh); }
+    const material = new THREE.MeshStandardMaterial({ color: 0x74b8d6, roughness: 0.5, metalness: 0.15 });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+    frameMesh(mesh);
+    currentMesh = mesh;
+    if (loadingEl) loadingEl.classList.add('hidden');
+  }
+
+  Array.prototype.forEach.call(tabsEl.children, (btn) => {
+    btn.addEventListener('click', () => {
+      Array.prototype.forEach.call(tabsEl.children, (b) => {
+        b.classList.toggle('active', b === btn);
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+      showIteration(btn.dataset.stl).catch((e) => console.error('iteration STL load failed:', e));
+    });
+  });
+
+  function resize() {
+    const rect = container.getBoundingClientRect();
+    const w = Math.max(1, rect.width), h = Math.max(1, rect.height);
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(container);
+  resize();
+
+  renderer.setAnimationLoop(() => {
+    if (autoRotate && currentMesh) currentMesh.rotation.y += 0.003;
+    controls.update();
+    renderer.render(scene, camera);
+  });
+
+  let started = false;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting && !started) {
+        started = true;
+        showIteration('iteration1').catch((err) => console.error('iteration STL load failed:', err));
+        io.disconnect();
+      }
+    });
+  }, { rootMargin: '200px' });
+  io.observe(root);
+}
+
+initIterationViewer();
