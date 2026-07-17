@@ -176,12 +176,16 @@ function initIterationCell(cell) {
   rim.position.set(-4, 2, -3);
   scene.add(rim);
 
+  // simple "turntable" interaction for these small side-by-side cells: spin
+  // left/right only, no tilt and no zoom — easier to use at this size, and
+  // leaves vertical drags free for page scroll (touch-action: pan-y)
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.enablePan = false;
-  controls.minDistance = 1.0;
-  controls.maxDistance = 5;
+  controls.enableZoom = false;
+  controls.minPolarAngle = controls.getPolarAngle();
+  controls.maxPolarAngle = controls.getPolarAngle();
 
   let autoRotate = true;
   let idleTimer = null;
