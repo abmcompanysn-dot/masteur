@@ -176,16 +176,14 @@ function initIterationCell(cell) {
   rim.position.set(-4, 2, -3);
   scene.add(rim);
 
-  // simple "turntable" interaction for these small side-by-side cells: spin
-  // left/right only, no tilt and no zoom — easier to use at this size, and
-  // leaves vertical drags free for page scroll (touch-action: pan-y)
+  // full free orbit, same feel as the hero viewer; vertical drags still
+  // scroll the page thanks to touch-action: pan-y on the canvas
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.enablePan = false;
-  controls.enableZoom = false;
-  controls.minPolarAngle = controls.getPolarAngle();
-  controls.maxPolarAngle = controls.getPolarAngle();
+  controls.minDistance = 1.0;
+  controls.maxDistance = 5;
 
   let autoRotate = true;
   let idleTimer = null;
@@ -239,8 +237,19 @@ function initIterationCell(cell) {
 function initIterationViewer() {
   const root = document.getElementById('iterViewer');
   if (!root) return;
+  const track = root.querySelector('.iter-grid');
   const cells = Array.prototype.slice.call(root.querySelectorAll('.iter-cell'));
   const viewers = cells.map(initIterationCell).filter(Boolean);
+
+  const prevBtn = root.querySelector('.iter-nav.prev');
+  const nextBtn = root.querySelector('.iter-nav.next');
+  function scrollByCell(dir) {
+    if (!track || !cells[0]) return;
+    const step = cells[0].getBoundingClientRect().width + 18; // + gap
+    track.scrollBy({ left: dir * step, behavior: 'smooth' });
+  }
+  if (prevBtn) prevBtn.addEventListener('click', () => scrollByCell(-1));
+  if (nextBtn) nextBtn.addEventListener('click', () => scrollByCell(1));
 
   let started = false;
   const io = new IntersectionObserver((entries) => {
